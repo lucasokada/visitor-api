@@ -11,11 +11,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = "person")
+@ToString(exclude = "person")
+@Getter
 @Entity
 @Table(name = "address")
-@EqualsAndHashCode
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +49,9 @@ public class AddressEntity {
     @Enumerated(EnumType.STRING)
     private BrazilState state;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
-    private PersonEntity visitor;
+    private PersonEntity person;
+
 }

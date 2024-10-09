@@ -1,26 +1,25 @@
-package br.com.unesp.visitor_api.core.application.domain;
+package br.com.unesp.visitor_api.core.application.ports.dto;
 
+import br.com.unesp.visitor_api.core.application.domain.model.enums.VisitorType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
-@SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
-public class Person {
+@Valid
+public class VisitorDTO {
     @NotEmpty
     @Schema(description = "nome da pessoa")
     private String name;
@@ -36,13 +35,17 @@ public class Person {
 
     @NotNull
     @Schema(description = "contato")
-    private Contact contact;
+    private ContactDTO contact;
 
     @NotNull
     @Schema(description = "informações de acesso")
-    private Access access;
+    private AccessDTO access;
 
     @NotEmpty
     @Schema(description = "endereços")
-    private Set<Address> addresses;
+    private List<AddressDTO> addresses;
+
+    @NotNull
+    @Schema(description = "tipo de visitante")
+    private VisitorType type;
 }
