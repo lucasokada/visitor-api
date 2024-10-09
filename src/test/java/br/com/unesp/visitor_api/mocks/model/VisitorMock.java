@@ -1,7 +1,7 @@
 package br.com.unesp.visitor_api.mocks.model;
 
 import br.com.unesp.visitor_api.core.application.domain.Visitor;
-import br.com.unesp.visitor_api.core.application.domain.model.enums.VisitorType;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.VisitorType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -1,6 +1,6 @@
 package br.com.unesp.visitor_api.core.application.domain;
 
-import br.com.unesp.visitor_api.core.application.domain.model.enums.BrazilState;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.BrazilState;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+//TODO: mapeamento de entidades
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString

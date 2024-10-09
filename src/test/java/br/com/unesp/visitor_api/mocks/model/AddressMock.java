@@ -1,7 +1,7 @@
 package br.com.unesp.visitor_api.mocks.model;
 
 import br.com.unesp.visitor_api.core.application.domain.Address;
-import br.com.unesp.visitor_api.core.application.domain.model.enums.BrazilState;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.BrazilState;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

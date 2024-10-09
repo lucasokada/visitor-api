@@ -1,7 +1,7 @@
 package br.com.unesp.visitor_api.unit.usecases.visitor;
 
 import br.com.unesp.visitor_api.core.application.domain.Visitor;
-import br.com.unesp.visitor_api.core.application.domain.exceptions.DuplicateDocumentException;
+import br.com.unesp.visitor_api.core.application.usecases.visitor.exceptions.DuplicateDocumentException;
 import br.com.unesp.visitor_api.core.application.ports.dto.VisitorDTO;
 import br.com.unesp.visitor_api.core.application.ports.out.persistence.entities.VisitorEntity;
 import br.com.unesp.visitor_api.core.application.ports.out.persistence.repositories.VisitorRepository;

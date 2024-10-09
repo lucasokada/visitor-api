@@ -1,6 +1,6 @@
 package br.com.unesp.visitor_api.core.application.ports.out.persistence.entities;
 
-import br.com.unesp.visitor_api.core.application.domain.model.enums.BrazilState;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.BrazilState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,6 +1,6 @@
 package br.com.unesp.visitor_api.mocks.dto;
 
-import br.com.unesp.visitor_api.core.application.domain.model.enums.BrazilState;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.BrazilState;
 import br.com.unesp.visitor_api.core.application.ports.dto.AddressDTO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

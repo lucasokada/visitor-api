@@ -1,6 +1,6 @@
 package br.com.unesp.visitor_api.mocks.dto;
 
-import br.com.unesp.visitor_api.core.application.domain.model.enums.VisitorType;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.VisitorType;
 import br.com.unesp.visitor_api.core.application.ports.dto.VisitorDTO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

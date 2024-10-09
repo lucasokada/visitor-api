@@ -1,6 +1,6 @@
 package br.com.unesp.visitor_api.mocks.entities;
 
-import br.com.unesp.visitor_api.core.application.domain.model.enums.VisitorType;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.VisitorType;
 import br.com.unesp.visitor_api.core.application.ports.out.persistence.entities.AddressEntity;
 import br.com.unesp.visitor_api.core.application.ports.out.persistence.entities.VisitorEntity;
 import lombok.AccessLevel;

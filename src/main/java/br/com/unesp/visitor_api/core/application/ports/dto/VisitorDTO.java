@@ -1,6 +1,6 @@
 package br.com.unesp.visitor_api.core.application.ports.dto;
 
-import br.com.unesp.visitor_api.core.application.domain.model.enums.VisitorType;
+import br.com.unesp.visitor_api.core.application.domain.entities.enums.VisitorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
