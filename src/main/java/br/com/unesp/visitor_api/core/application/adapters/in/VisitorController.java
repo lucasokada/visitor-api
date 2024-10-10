@@ -1,5 +1,8 @@
 package br.com.unesp.visitor_api.core.application.adapters.in;
 
+import br.com.unesp.visitor_api.core.application.adapters.DefaultApiResponse;
+import br.com.unesp.visitor_api.core.application.adapters.VisitorResponse;
+import br.com.unesp.visitor_api.core.application.domain.entities.Visitor;
 import br.com.unesp.visitor_api.core.application.ports.dto.VisitorDTO;
 import br.com.unesp.visitor_api.core.application.ports.in.AddVisitorUseCase;
 import jakarta.validation.Valid;
@@ -19,7 +22,8 @@ public class VisitorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@Valid @RequestBody VisitorDTO visitor) {
-        addVisitorUseCase.addVisitor(visitor);
+    public DefaultApiResponse<VisitorResponse> add(@Valid @RequestBody VisitorDTO visitor) {
+        Visitor newVisitor = addVisitorUseCase.addVisitor(visitor);
+        return new DefaultApiResponse<>("create success", new VisitorResponse(newVisitor.getId(), newVisitor.getDocumentNumber()));
     }
 }

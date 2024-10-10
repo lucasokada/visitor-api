@@ -1,4 +1,4 @@
-package br.com.unesp.visitor_api.core.application.ports.out.persistence.entities;
+package br.com.unesp.visitor_api.core.application.domain.entities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,7 +35,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = "Person")
 @Table(name = "person")
-public class PersonEntity {
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -46,29 +46,29 @@ public class PersonEntity {
     @Column(name = "birthDate", nullable = false)
     private LocalDate birthIn;
 
-    @Column(name = "documentNumber", nullable = false, length = 9)
+    @Column(name = "documentNumber", nullable = false, length = 11, unique = true)
     private String documentNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
-    private ContactEntity contact;
+    private Contact contact;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "access_id", referencedColumnName = "id")
-    private AccessEntity access;
+    private Access access;
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private Set<AddressEntity> addresses = new HashSet<>();
+    private Set<Address> addresses = new HashSet<>();
 
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (!(object instanceof PersonEntity that)) return false;
+        if (!(object instanceof Person that)) return false;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(birthIn, that.birthIn) && Objects.equals(documentNumber, that.documentNumber) && Objects.equals(contact, that.contact) && Objects.equals(access, that.access) && Objects.equals(addresses, that.addresses);
     }
 
-    public void addAllAddresses(Set<AddressEntity> addresses) {
+    public void addAllAddresses(Set<Address> addresses) {
         if(this.addresses == null) {
             this.addresses = new HashSet<>();
         }

@@ -1,4 +1,4 @@
-package br.com.unesp.visitor_api.core.application.ports.out.persistence.entities;
+package br.com.unesp.visitor_api.core.application.domain.entities;
 
 import br.com.unesp.visitor_api.core.application.domain.entities.enums.BrazilState;
 import jakarta.persistence.Column;
@@ -25,7 +25,7 @@ import lombok.ToString;
 @Getter
 @Entity
 @Table(name = "address")
-public class AddressEntity {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -52,6 +52,6 @@ public class AddressEntity {
     @Setter
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
-    private PersonEntity person;
+    private Person person;
 
 }

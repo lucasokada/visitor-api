@@ -1,4 +1,4 @@
-package br.com.unesp.visitor_api.core.application.ports.out.persistence.entities;
+package br.com.unesp.visitor_api.core.application.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ import java.util.Objects;
 @Getter
 @Entity
 @Table(name = "contact")
-public class ContactEntity {
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,16 +32,16 @@ public class ContactEntity {
     @Column(name = "commercialPhone", length = 10)
     private String commercialPhone;
 
-    @Column(name = "cellPhone", length = 10)
+    @Column(name = "cellPhone", length = 12)
     private String cellPhone;
 
-    @Column(name = "email", length = 10)
+    @Column(name = "email")
     private String email;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (!(object instanceof ContactEntity that)) return false;
+        if (!(object instanceof Contact that)) return false;
         return Objects.equals(id, that.id) && Objects.equals(residentialPhone, that.residentialPhone) && Objects.equals(commercialPhone, that.commercialPhone) && Objects.equals(cellPhone, that.cellPhone) && Objects.equals(email, that.email);
     }
 }

@@ -1,4 +1,4 @@
-package br.com.unesp.visitor_api.core.application.ports.out.persistence.entities;
+package br.com.unesp.visitor_api.core.application.domain.entities;
 
 import br.com.unesp.visitor_api.core.application.domain.entities.enums.VisitorType;
 import jakarta.persistence.Column;
@@ -27,13 +27,13 @@ import java.util.Set;
 @Entity(name = "Visitor")
 @Table(name = "visitor")
 @PrimaryKeyJoinColumn(name = "person_id")
-public class VisitorEntity extends PersonEntity {
+public class Visitor extends Person {
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private VisitorType type = VisitorType.OTHER;
 
-    public VisitorEntity(Long id, String name, LocalDate birthIn, String documentNumber, ContactEntity contact, AccessEntity access, Set<AddressEntity> addresses, VisitorType type) {
+    public Visitor(Long id, String name, LocalDate birthIn, String documentNumber, Contact contact, Access access, Set<Address> addresses, VisitorType type) {
         super(id, name, birthIn, documentNumber, contact, access, addresses);
         this.type = type;
     }

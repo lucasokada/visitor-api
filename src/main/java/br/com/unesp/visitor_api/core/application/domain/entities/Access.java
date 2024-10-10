@@ -1,4 +1,4 @@
-package br.com.unesp.visitor_api.core.application.ports.out.persistence.entities;
+package br.com.unesp.visitor_api.core.application.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +19,7 @@ import lombok.ToString;
 @Getter
 @Entity
 @Table(name = "access")
-public class AccessEntity {
+public class Access {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

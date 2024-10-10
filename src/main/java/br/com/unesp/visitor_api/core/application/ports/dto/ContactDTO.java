@@ -7,27 +7,29 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
 @Valid
 public class ContactDTO {
-    @Pattern(regexp="(^$|[0-9]{10})")
+    @Pattern(regexp="(^$|^[0-9]{1,10}$)")
     @Schema(description = "telefone residencial", example = "XXXXYYYY")
     private String residentialPhone;
 
-    @Pattern(regexp="(^$|[0-9]{10})")
+    @Pattern(regexp="(^$|^[0-9]{1,10}$)")
     @Schema(description = "telefone comercial", example = "XXXXYYYY")
     private String commercialPhone;
 
-    @Pattern(regexp="(^$|[0-9]{10})")
+    @Pattern(regexp="(^$|^[0-9]{1,12}$)")
     @Schema(description = "telefone celular", example = "DDXXXXYYYY")
     private String cellPhone;
 
-    @Email
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", flags = Pattern.Flag.CASE_INSENSITIVE)
     @Schema(description = "email", example = "user@email.com")
     private String email;
 }
