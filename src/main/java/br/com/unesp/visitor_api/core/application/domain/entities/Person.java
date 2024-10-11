@@ -1,5 +1,6 @@
 package br.com.unesp.visitor_api.core.application.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +45,7 @@ public class Person {
     private String name;
 
     @Column(name = "birthDate", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthIn;
 
     @Column(name = "documentNumber", nullable = false, length = 11, unique = true)
@@ -57,7 +59,7 @@ public class Person {
     @JoinColumn(name = "access_id", referencedColumnName = "id")
     private Access access;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
     private Set<Address> addresses = new HashSet<>();
 

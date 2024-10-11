@@ -1,10 +1,12 @@
 package br.com.unesp.visitor_api.core.application.domain.entities;
 
 import br.com.unesp.visitor_api.core.application.domain.entities.enums.BrazilState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,8 +52,9 @@ public class Address {
     private BrazilState state;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id", nullable = false)
+    @JsonIgnore
     private Person person;
 
 }

@@ -2,6 +2,7 @@ package br.com.unesp.visitor_api.core.application.adapters.in;
 
 import br.com.unesp.visitor_api.core.application.adapters.DefaultApiResponse;
 import br.com.unesp.visitor_api.core.application.usecases.visitor.exceptions.DuplicateDocumentException;
+import br.com.unesp.visitor_api.core.application.usecases.visitor.exceptions.NotFoundException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(DuplicateDocumentException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public DefaultApiResponse<Void> handleDuplicateDocumentException(DuplicateDocumentException ex) {
+        return new DefaultApiResponse<>(ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public DefaultApiResponse<Void> handleNotFoundException(NotFoundException ex) {
         return new DefaultApiResponse<>(ex.getMessage(), null);
     }
 }
