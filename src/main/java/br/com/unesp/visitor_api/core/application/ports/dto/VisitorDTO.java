@@ -4,6 +4,7 @@ import br.com.unesp.visitor_api.core.application.domain.entities.enums.VisitorTy
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
@@ -21,9 +23,10 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Getter
+@Setter
 @Valid
 public class VisitorDTO {
-    @NotEmpty
+    @NotBlank
     @Schema(description = "nome da pessoa")
     private String name;
 
@@ -32,9 +35,9 @@ public class VisitorDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthIn;
 
-    @NotEmpty
-    @Pattern(regexp = "^[0-9]{9}$")
-    @Schema(description = "RG", example = "111111111")
+    @NotBlank
+    @Pattern(regexp = "^[0-9]{9,11}$")
+    @Schema(description = "RG ou CPF", example = "111111111")
     private String documentNumber;
 
     @NotNull

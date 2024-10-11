@@ -1,4 +1,4 @@
-package br.com.unesp.visitor_api.unit.usecases.visitor;
+package br.com.unesp.visitor_api.usecases;
 
 import br.com.unesp.visitor_api.core.application.domain.entities.Visitor;
 import br.com.unesp.visitor_api.core.application.ports.out.persistence.repositories.VisitorRepository;
@@ -6,75 +6,63 @@ import br.com.unesp.visitor_api.core.application.usecases.visitor.GetVisitor;
 import br.com.unesp.visitor_api.core.application.usecases.visitor.exceptions.NotFoundException;
 import br.com.unesp.visitor_api.mocks.entities.VisitorMock;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GetVisitorTest {
-    @InjectMocks
+    @Autowired
     private GetVisitor getVisitor;
 
-    @Mock
-    VisitorRepository visitorRepository;
+    @Autowired
+    private VisitorRepository visitorRepository;
 
     @Test
+    @Transactional
     void getByDocumentNumber_whenSuccess_expectReturnVisitor() {
         String documentNumber = "37055587069";
         Optional<Visitor> visitor = Optional.of(VisitorMock.mockWithId());
 
-        when(visitorRepository.findByDocumentNumber(anyString())).thenReturn(visitor);
-
+        visitorRepository.save(VisitorMock.mockWithoutId());
         var result = getVisitor.getByDocumentNumber(documentNumber);
 
         assertEquals(visitor.get(), result);
-        verify(visitorRepository).findByDocumentNumber(documentNumber);
     }
 
     @Test
     void getByDocumentNumber_whenNotFound_expectThrowNotFoundException() {
         String documentNumber = "37055587069";
-        Optional<Visitor> visitor = Optional.empty();
-
-        when(visitorRepository.findByDocumentNumber(anyString())).thenReturn(visitor);
 
         assertThrows(NotFoundException.class, () -> getVisitor.getByDocumentNumber(documentNumber));
 
-        verify(visitorRepository).findByDocumentNumber(documentNumber);
     }
 
     @Test
+    @Transactional
     void getById_whenSuccess_expectReturnVisitor() {
         Long id = 1L;
         Optional<Visitor> visitor = Optional.of(VisitorMock.mockWithId());
 
-        when(visitorRepository.findById(anyLong())).thenReturn(visitor);
-
+        Visitor newVisitor = visitorRepository.save(VisitorMock.mockWithoutId());
         var result = getVisitor.getById(id);
 
         assertEquals(visitor.get(), result);
-        verify(visitorRepository).findById(1L);
     }
 
     @Test
     void getById_whenNotFound_expectThrowNotFoundException() {
         Long id = 1L;
-        Optional<Visitor> visitor = Optional.empty();
-
-        when(visitorRepository.findById(anyLong())).thenReturn(visitor);
 
         assertThrows(NotFoundException.class, () -> getVisitor.getById(id));
-
-        verify(visitorRepository).findById(1L);
     }
 }
