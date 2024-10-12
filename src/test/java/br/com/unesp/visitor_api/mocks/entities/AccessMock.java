@@ -12,6 +12,13 @@ public class AccessMock {
 
     public static Access mockWithId() {
         return new Access(1L, "visitor1", "passVisitor1");
+    }
 
+    public static Access mockEdited() {
+        return new Access(1L, "editedVisitor1", "editedPassVisitor1");
+    }
+
+    public static Access mockPartialEdited() {
+        return new Access(1L, "visitor1", "editedPassVisitor1");
     }
 }

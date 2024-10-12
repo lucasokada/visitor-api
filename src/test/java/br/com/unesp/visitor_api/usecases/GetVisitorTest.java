@@ -12,8 +12,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -31,12 +29,12 @@ class GetVisitorTest {
     @Transactional
     void getByDocumentNumber_whenSuccess_expectReturnVisitor() {
         String documentNumber = "37055587069";
-        Optional<Visitor> visitor = Optional.of(VisitorMock.mockWithId());
+        Visitor visitor = VisitorMock.mockWithId();
 
         visitorRepository.save(VisitorMock.mockWithoutId());
         var result = getVisitor.getByDocumentNumber(documentNumber);
 
-        assertEquals(visitor.get(), result);
+        assertEquals(visitor, result);
     }
 
     @Test
@@ -51,12 +49,11 @@ class GetVisitorTest {
     @Transactional
     void getById_whenSuccess_expectReturnVisitor() {
         Long id = 1L;
-        Optional<Visitor> visitor = Optional.of(VisitorMock.mockWithId());
 
         Visitor newVisitor = visitorRepository.save(VisitorMock.mockWithoutId());
         var result = getVisitor.getById(id);
 
-        assertEquals(visitor.get(), result);
+        assertEquals(newVisitor, result);
     }
 
     @Test
