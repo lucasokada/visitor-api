@@ -23,7 +23,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -61,7 +61,7 @@ public class Person {
 
     @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
-    private Set<Address> addresses = new HashSet<>();
+    private Set<Address> addresses = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object object) {
@@ -72,7 +72,7 @@ public class Person {
 
     public void addAllAddresses(Set<Address> addresses) {
         if(this.addresses == null) {
-            this.addresses = new HashSet<>();
+            this.addresses = new LinkedHashSet<>();
         }
 
         this.addresses.addAll(addresses);
