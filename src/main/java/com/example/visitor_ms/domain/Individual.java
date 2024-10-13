@@ -14,11 +14,13 @@ public class Individual implements Person {
     private String name;
     private String documentNumber;
     private LocalDate bornAt;
+    private Contact contact;
 
-    public Individual(String name, String documentNumber, LocalDate bornAt) {
+    public Individual(String name, String documentNumber, LocalDate bornAt, Contact contact) {
         this.name = validateName(name);
         this.documentNumber = validateDocumentNumber(documentNumber);
         this.bornAt = validateBirthDate(bornAt);
+        this.contact = contact;
     }
 
     private String validateName(String name) {

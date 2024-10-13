@@ -2,6 +2,7 @@ package com.example.visitor_ms.domain.service;
 
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.command.CreateVisitorCommand;
+import com.example.visitor_ms.domain.command.assembler.CreateVisitorCommandAssembler;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
 import com.example.visitor_ms.domain.usecase.CreateVisitorUseCase;
 import com.example.visitor_ms.domain.usecase.GetVisitorUseCase;
@@ -19,7 +20,7 @@ public class VisitorService implements CreateVisitorUseCase, GetVisitorUseCase {
         if(existentPerson.isPresent()) {
             return existentPerson.get();
         } else {
-            Visitor person = new Visitor(visitorCommand.getName(), visitorCommand.getDocumentNumber(), visitorCommand.getBornIn(), visitorCommand.getType());
+            Visitor person = CreateVisitorCommandAssembler.assemble(visitorCommand);
             visitorRepository.save(person);
             return person;
         }

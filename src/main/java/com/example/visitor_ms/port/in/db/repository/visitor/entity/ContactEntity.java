@@ -1,5 +1,6 @@
 package com.example.visitor_ms.port.in.db.repository.visitor.entity;
 
+import com.example.visitor_ms.domain.Contact;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,4 +36,8 @@ public class ContactEntity {
 
     @Column(name = "email")
     private String email;
+
+    public Contact toDomain() {
+        return new Contact(this.residentialPhone, this.commercialPhone, this.cellPhone, this.email);
+    }
 }

@@ -22,8 +22,12 @@ public class VisitorRepositoryImpl implements VisitorRepository {
     @Override
     public Optional<Visitor> findByDocumentNumber(String documentNumber) {
         Optional<VisitorEntity> visitor = visitorJpaRepository.findByDocumentNumber(documentNumber);
+        if(visitor.isPresent()) {
+            VisitorEntity presentVisitor = visitor.get();
+            return Optional.of(presentVisitor.toDomain());
+        }
 
-        return Optional.of(new Visitor(visitor.get().getName(), visitor.get().getDocumentNumber(), visitor.get().getBirthIn(), visitor.get().getType()));
+        return Optional.empty();
     }
 }
 

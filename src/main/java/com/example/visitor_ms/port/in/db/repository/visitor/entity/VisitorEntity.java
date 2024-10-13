@@ -1,5 +1,6 @@
 package com.example.visitor_ms.port.in.db.repository.visitor.entity;
 
+import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.VisitorType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,4 +31,9 @@ public class VisitorEntity extends IndividualPersonEntity {
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private VisitorType type = VisitorType.OTHER;
+
+    public Visitor toDomain() {
+        return new Visitor(this.getName(), this.getDocumentNumber(), this.getBirthIn(), this.getType(),
+                this.getContact().toDomain());
+    }
 }
