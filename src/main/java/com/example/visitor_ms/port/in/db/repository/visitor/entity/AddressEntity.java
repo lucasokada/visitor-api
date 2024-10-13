@@ -47,6 +47,15 @@ public class AddressEntity {
     @Enumerated(EnumType.STRING)
     private BrazilState state;
 
+    public AddressEntity(Address address) {
+        this.street = address.getStreet();
+        this.number = address.getNumber();
+        this.neighborhood = address.getNeighborhood();
+        this.zipCode = address.getZipCode();
+        this.city = address.getCity();
+        this.state = address.getState();
+    }
+
     Address toDomain() {
         return new Address(this.street, this.number, this.neighborhood, this.zipCode, this.city, this.state);
     }

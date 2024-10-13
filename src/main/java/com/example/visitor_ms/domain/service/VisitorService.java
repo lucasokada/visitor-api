@@ -7,9 +7,11 @@ import com.example.visitor_ms.domain.repository.VisitorRepository;
 import com.example.visitor_ms.domain.usecase.CreateVisitorUseCase;
 import com.example.visitor_ms.domain.usecase.GetVisitorUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 @RequiredArgsConstructor
 public class VisitorService implements CreateVisitorUseCase, GetVisitorUseCase {
     private final VisitorRepository visitorRepository;

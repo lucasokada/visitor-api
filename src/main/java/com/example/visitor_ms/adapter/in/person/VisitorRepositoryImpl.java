@@ -2,20 +2,21 @@ package com.example.visitor_ms.adapter.in.person;
 
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
-import com.example.visitor_ms.port.in.db.repository.visitor.entity.IndividualPersonEntity;
 import com.example.visitor_ms.port.in.db.repository.visitor.entity.VisitorEntity;
 import com.example.visitor_ms.port.in.db.repository.visitor.repository.VisitorJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 @RequiredArgsConstructor
 public class VisitorRepositoryImpl implements VisitorRepository {
     private final VisitorJpaRepository visitorJpaRepository;
 
     @Override
-    public void save(Visitor person) {
-        IndividualPersonEntity entity = new IndividualPersonEntity(person);
+    public void save(Visitor visitor) {
+        VisitorEntity entity = new VisitorEntity(visitor);
         visitorJpaRepository.save(entity);
     }
 

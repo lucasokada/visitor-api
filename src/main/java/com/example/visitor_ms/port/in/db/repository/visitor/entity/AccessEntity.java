@@ -26,6 +26,11 @@ public class AccessEntity {
     @Column(name = "password")
     private String password;
 
+    public AccessEntity(Access access) {
+        this.username = access.getUsername();
+        this.password = access.getPassword();
+    }
+
     Access toDomain() {
         return new Access(this.username, this.password);
     }

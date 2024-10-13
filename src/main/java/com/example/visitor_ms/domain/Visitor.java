@@ -1,8 +1,15 @@
 package com.example.visitor_ms.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.time.LocalDate;
 import java.util.Set;
 
+@Getter
+@EqualsAndHashCode
+@ToString
 public class Visitor extends Individual {
     private VisitorType type;
 

@@ -37,6 +37,13 @@ public class ContactEntity {
     @Column(name = "email")
     private String email;
 
+    public ContactEntity(Contact contact) {
+        this.residentialPhone = contact.getResidentialPhone();
+        this.commercialPhone = contact.getCommercialPhone();
+        this.cellPhone = contact.getCellPhone();
+        this.email = contact.getEmail();
+    }
+
     Contact toDomain() {
         return new Contact(this.residentialPhone, this.commercialPhone, this.cellPhone, this.email);
     }

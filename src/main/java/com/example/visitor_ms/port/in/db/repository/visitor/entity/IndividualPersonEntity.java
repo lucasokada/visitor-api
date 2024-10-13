@@ -1,6 +1,5 @@
 package com.example.visitor_ms.port.in.db.repository.visitor.entity;
 
-import com.example.visitor_ms.domain.Person;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +27,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
-@Entity
+@Entity(name = "Person")
 @Table(name = "person")
 public class IndividualPersonEntity {
     @Id
@@ -45,14 +44,9 @@ public class IndividualPersonEntity {
     private ContactEntity contact;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "access_id", referencedColumnName = "id")
+    @JoinColumn(name = "access_id", referencedColumnName = "username")
     private AccessEntity access;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AddressEntity> addresses = new HashSet<>();
-
-    public IndividualPersonEntity(Person person) {
-        this.documentNumber = person.getDocumentNumber();
-        this.name = person.getName();
-    }
 }
