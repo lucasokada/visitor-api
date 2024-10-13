@@ -2,10 +2,14 @@ package com.example.visitor_ms.domain.command;
 
 import com.example.visitor_ms.domain.BrazilState;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateAddressCommand {
     private String street;
     private Integer number;

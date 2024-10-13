@@ -2,13 +2,17 @@ package com.example.visitor_ms.domain.command;
 
 import com.example.visitor_ms.domain.VisitorType;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
+@Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateVisitorCommand {
     private String name;
     private String documentNumber;

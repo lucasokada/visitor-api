@@ -8,6 +8,7 @@ import com.example.visitor_ms.domain.usecase.CreateVisitorUseCase;
 import com.example.visitor_ms.domain.usecase.GetVisitorUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class VisitorService implements CreateVisitorUseCase, GetVisitorUseCase {
     private final VisitorRepository visitorRepository;
 
     @Override
+    @Transactional
     public Visitor create(CreateVisitorCommand visitorCommand) {
         Optional<Visitor> existentPerson = visitorRepository.findByDocumentNumber(visitorCommand.getDocumentNumber());
         if(existentPerson.isPresent()) {
@@ -29,6 +31,7 @@ public class VisitorService implements CreateVisitorUseCase, GetVisitorUseCase {
     }
 
     @Override
+    @Transactional
     public Optional<Visitor> getByDocumentNumber(String documentNumber) {
         return visitorRepository.findByDocumentNumber(documentNumber);
     }
