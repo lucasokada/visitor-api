@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CompanyService implements CreateCompanyUseCase {
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
     public Company create(CreateCompanyCommand createCompanyCommand) {

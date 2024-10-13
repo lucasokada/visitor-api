@@ -1,4 +1,4 @@
-package com.example.visitor_ms.ports.in;
+package com.example.visitor_ms.ports.in.rest.visitor;
 
 import com.example.visitor_ms.domain.Access;
 import com.example.visitor_ms.domain.Address;

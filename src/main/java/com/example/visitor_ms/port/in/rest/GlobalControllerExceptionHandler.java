@@ -2,6 +2,7 @@ package com.example.visitor_ms.port.in.rest;
 
 import com.example.visitor_ms.domain.exception.InvalidAccessException;
 import com.example.visitor_ms.domain.exception.InvalidAddressException;
+import com.example.visitor_ms.domain.exception.InvalidCompanyException;
 import com.example.visitor_ms.domain.exception.InvalidContactException;
 import com.example.visitor_ms.domain.exception.InvalidPersonException;
 import com.example.visitor_ms.domain.exception.NotFoundException;
@@ -49,6 +50,13 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public DefaultApiResponse<Void> handleInvalidContactException(InvalidContactException ex) {
         return new DefaultApiResponse<>(ex.getMessage(), null);
+    }
+
+
+    @ExceptionHandler(InvalidCompanyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleInvalidCompanyException(InvalidCompanyException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
