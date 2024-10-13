@@ -28,12 +28,12 @@ public class VisitorEntity extends IndividualPersonEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private VisitorType type = VisitorType.OTHER;
 
     public Visitor toDomain() {
         return new Visitor(this.getName(), this.getDocumentNumber(), this.getBirthIn(), this.getType(),
-                this.getContact().toDomain());
+                this.getContact().toDomain(), this.getAccess().toDomain());
     }
 }

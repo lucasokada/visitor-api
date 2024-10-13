@@ -15,12 +15,14 @@ public class Individual implements Person {
     private String documentNumber;
     private LocalDate bornAt;
     private Contact contact;
+    private Access access;
 
-    public Individual(String name, String documentNumber, LocalDate bornAt, Contact contact) {
+    public Individual(String name, String documentNumber, LocalDate bornAt, Contact contact, Access access) {
         this.name = validateName(name);
         this.documentNumber = validateDocumentNumber(documentNumber);
         this.bornAt = validateBirthDate(bornAt);
         this.contact = contact;
+        this.access = access;
     }
 
     private String validateName(String name) {

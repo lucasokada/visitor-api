@@ -14,4 +14,5 @@ public class CreateVisitorCommand {
     private LocalDate bornIn;
     private VisitorType type;
     private CreateContactCommand createContactCommand;
+    private CreateAccessCommand createAccessCommand;
 }

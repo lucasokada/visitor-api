@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class CreateVisitorCommandAssembler {
     public static Visitor assemble(CreateVisitorCommand visitorCommand) {
         return new Visitor(visitorCommand.getName(), visitorCommand.getDocumentNumber(), visitorCommand.getBornIn(),
-                visitorCommand.getType(), CreateContactCommandAssembler.assemble(visitorCommand.getCreateContactCommand()));
+                visitorCommand.getType(), CreateContactCommandAssembler.assemble(visitorCommand.getCreateContactCommand()),
+                CreateAccessCommandAssembler.assemble(visitorCommand.getCreateAccessCommand()));
     }
 }

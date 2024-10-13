@@ -40,6 +40,10 @@ public class IndividualPersonEntity {
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private ContactEntity contact;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "access_id", referencedColumnName = "id")
+    private AccessEntity access;
+
     public IndividualPersonEntity(Person person) {
         this.documentNumber = person.getDocumentNumber();
         this.name = person.getName();

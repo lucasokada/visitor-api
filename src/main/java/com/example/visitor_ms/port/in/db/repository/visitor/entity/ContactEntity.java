@@ -37,7 +37,7 @@ public class ContactEntity {
     @Column(name = "email")
     private String email;
 
-    public Contact toDomain() {
+    Contact toDomain() {
         return new Contact(this.residentialPhone, this.commercialPhone, this.cellPhone, this.email);
     }
 }

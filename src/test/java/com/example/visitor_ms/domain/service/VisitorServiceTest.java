@@ -1,8 +1,10 @@
 package com.example.visitor_ms.domain.service;
 
+import com.example.visitor_ms.domain.Access;
 import com.example.visitor_ms.domain.Contact;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.VisitorType;
+import com.example.visitor_ms.domain.command.CreateAccessCommand;
 import com.example.visitor_ms.domain.command.CreateContactCommand;
 import com.example.visitor_ms.domain.command.CreateVisitorCommand;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
@@ -34,19 +36,28 @@ class VisitorServiceTest {
 
     private CreateVisitorCommand validVisitorCommand() {
         return new CreateVisitorCommand("Augusto João da Rosa", "11309929939",
-                LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContactCommand());
+                LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContactCommand(),
+                validAccessCommand());
     }
 
     private CreateContactCommand validContactCommand() {
         return new CreateContactCommand("6930138401", "9626759827", "1935794707", "name@email.com");
     }
 
+    private CreateAccessCommand validAccessCommand() {
+        return new CreateAccessCommand("userName", "PassworD123!");
+    }
+
     private Visitor validVisitor() {
-        return new Visitor("Augusto João da Rosa", "11309929939", LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContact());
+        return new Visitor("Augusto João da Rosa", "11309929939", LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContact(), validAccess());
     }
 
     private Contact validContact() {
         return new Contact("6930138401", "9626759827", "1935794707", "name@email.com");
+    }
+
+    private Access validAccess() {
+        return new Access("userName", "PassworD123!");
     }
 
     @Test
@@ -64,7 +75,7 @@ class VisitorServiceTest {
     @Test
     void create_whenExistentPerson_expectReturnPerson() {
         CreateVisitorCommand request = validVisitorCommand();
-        Visitor visitor = new Visitor("Camila Eliane Marina Farias", "11309929939", LocalDate.of(1960, 3, 5), VisitorType.RELATED, validContact());
+        Visitor visitor = new Visitor("Camila Eliane Marina Farias", "11309929939", LocalDate.of(1960, 3, 5), VisitorType.RELATED, validContact(), validAccess());
         when(visitorRepository.findByDocumentNumber(anyString())).thenReturn(Optional.of(visitor));
 
         Visitor result = visitorService.create(request);
