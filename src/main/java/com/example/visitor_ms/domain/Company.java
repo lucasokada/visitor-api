@@ -24,13 +24,15 @@ public class Company extends Legal {
     }
 
     private Set<Visitor> validateServiceProviderVisitors(Set<Visitor> serviceProviders) {
-        boolean hasOnlyServiceProviders = serviceProviders
-                .stream()
-                .anyMatch(e -> e.getType().equals(VisitorType.SERVICE_PROVIDER));
+        if(!serviceProviders.isEmpty()) {
+            boolean hasOnlyServiceProviders = serviceProviders
+                    .stream()
+                    .anyMatch(e -> e.getType().equals(VisitorType.SERVICE_PROVIDER));
 
-        if(!hasOnlyServiceProviders) {
-            throw new InvalidCompanyException("Invalid service providers: All visitors associated with the company " +
-                    "must be of type SERVICE_PROVIDER");
+            if (!hasOnlyServiceProviders) {
+                throw new InvalidCompanyException("Invalid service providers: All visitors associated with the company " +
+                        "must be of type SERVICE_PROVIDER");
+            }
         }
 
         return serviceProviders;

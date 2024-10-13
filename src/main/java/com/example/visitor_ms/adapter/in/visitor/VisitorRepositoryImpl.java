@@ -1,4 +1,4 @@
-package com.example.visitor_ms.adapter.in.person;
+package com.example.visitor_ms.adapter.in.visitor;
 
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.repository.VisitorRepository;

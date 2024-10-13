@@ -1,6 +1,5 @@
-package com.example.visitor_ms.adapter.in;
+package com.example.visitor_ms.adapter.in.visitor;
 
-import com.example.visitor_ms.adapter.in.person.VisitorRepositoryImpl;
 import com.example.visitor_ms.domain.Access;
 import com.example.visitor_ms.domain.Address;
 import com.example.visitor_ms.domain.BrazilState;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class PersonRepositoryTest {
+class VisitorRepositoryImplTest {
     @Autowired
     private VisitorRepositoryImpl visitorRepository;
 
