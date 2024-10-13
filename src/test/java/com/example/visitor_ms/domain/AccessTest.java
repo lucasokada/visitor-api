@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AccessTest {
+class AccessTest {
     @Test
     void access_whenValid_expectCreateNewAccesss() {
         assertDoesNotThrow(() -> new Access("userName", "PassworD123!"));

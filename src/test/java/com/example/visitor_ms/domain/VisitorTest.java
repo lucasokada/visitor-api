@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class VisitorTest {
+class VisitorTest {
     private Contact validContact = new Contact("6930138401", "9626759827", "1935794707", "name@email.com");
     private Access validAccess = new Access("userName", "PassworD123!");
 
