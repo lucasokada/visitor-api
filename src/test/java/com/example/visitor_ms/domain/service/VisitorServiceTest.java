@@ -1,10 +1,13 @@
 package com.example.visitor_ms.domain.service;
 
 import com.example.visitor_ms.domain.Access;
+import com.example.visitor_ms.domain.Address;
+import com.example.visitor_ms.domain.BrazilState;
 import com.example.visitor_ms.domain.Contact;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.VisitorType;
 import com.example.visitor_ms.domain.command.CreateAccessCommand;
+import com.example.visitor_ms.domain.command.CreateAddressCommand;
 import com.example.visitor_ms.domain.command.CreateContactCommand;
 import com.example.visitor_ms.domain.command.CreateVisitorCommand;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
@@ -15,7 +18,11 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,7 +44,7 @@ class VisitorServiceTest {
     private CreateVisitorCommand validVisitorCommand() {
         return new CreateVisitorCommand("Augusto João da Rosa", "11309929939",
                 LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContactCommand(),
-                validAccessCommand());
+                validAccessCommand(), validAddressesCommand());
     }
 
     private CreateContactCommand validContactCommand() {
@@ -48,8 +55,17 @@ class VisitorServiceTest {
         return new CreateAccessCommand("userName", "PassworD123!");
     }
 
+    private List<CreateAddressCommand> validAddressesCommand() {
+        return new ArrayList<>() {{
+            add(new CreateAddressCommand("Rua 18 JB", 533, "Jardim Bandeirante (COHAB)", "13506517", "Rio Claro", BrazilState.SP));
+            add(new CreateAddressCommand("Avenida 7", 773, "Jardim Claret", "13503255", "Rio Claro", BrazilState.SP));
+        }};
+    }
+
     private Visitor validVisitor() {
-        return new Visitor("Augusto João da Rosa", "11309929939", LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContact(), validAccess());
+        return new Visitor("Augusto João da Rosa", "11309929939",
+                LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContact(), validAccess(),
+                validAddresses());
     }
 
     private Contact validContact() {
@@ -58,6 +74,13 @@ class VisitorServiceTest {
 
     private Access validAccess() {
         return new Access("userName", "PassworD123!");
+    }
+
+    private Set<Address> validAddresses() {
+        return new HashSet<>() {{
+            add(new Address("Rua 18 JB", 533, "Jardim Bandeirante (COHAB)", "13506517", "Rio Claro", BrazilState.SP));
+            add(new Address("Avenida 7", 773, "Jardim Claret", "13503255", "Rio Claro", BrazilState.SP));
+        }};
     }
 
     @Test
@@ -75,7 +98,8 @@ class VisitorServiceTest {
     @Test
     void create_whenExistentPerson_expectReturnPerson() {
         CreateVisitorCommand request = validVisitorCommand();
-        Visitor visitor = new Visitor("Camila Eliane Marina Farias", "11309929939", LocalDate.of(1960, 3, 5), VisitorType.RELATED, validContact(), validAccess());
+        Visitor visitor = new Visitor("Camila Eliane Marina Farias", "11309929939",
+                LocalDate.of(1960, 3, 5), VisitorType.RELATED, validContact(), validAccess(), validAddresses());
         when(visitorRepository.findByDocumentNumber(anyString())).thenReturn(Optional.of(visitor));
 
         Visitor result = visitorService.create(request);

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -15,4 +16,5 @@ public class CreateVisitorCommand {
     private VisitorType type;
     private CreateContactCommand createContactCommand;
     private CreateAccessCommand createAccessCommand;
+    private List<CreateAddressCommand> createAddressCommands;
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @EqualsAndHashCode
@@ -16,13 +17,15 @@ public class Individual implements Person {
     private LocalDate bornAt;
     private Contact contact;
     private Access access;
+    private Set<Address> addresses;
 
-    public Individual(String name, String documentNumber, LocalDate bornAt, Contact contact, Access access) {
+    public Individual(String name, String documentNumber, LocalDate bornAt, Contact contact, Access access, Set<Address> addresses) {
         this.name = validateName(name);
         this.documentNumber = validateDocumentNumber(documentNumber);
         this.bornAt = validateBirthDate(bornAt);
         this.contact = contact;
         this.access = access;
+        this.addresses = addresses;
     }
 
     private String validateName(String name) {
