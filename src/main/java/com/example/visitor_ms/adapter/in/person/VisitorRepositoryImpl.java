@@ -30,6 +30,16 @@ public class VisitorRepositoryImpl implements VisitorRepository {
 
         return Optional.empty();
     }
+
+    @Override
+    public boolean existsByDocumentNumber(String documentNumber) {
+        return visitorJpaRepository.existsByDocumentNumber(documentNumber);
+    }
+
+    @Override
+    public void deleteByDocumentNumber(String documentNumber) {
+        visitorJpaRepository.deleteByDocumentNumber(documentNumber);
+    }
 }
 
 //1 - event source

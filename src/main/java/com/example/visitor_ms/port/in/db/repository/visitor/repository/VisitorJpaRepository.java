@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface VisitorJpaRepository extends JpaRepository<IndividualPersonEntity, String> {
     Optional<VisitorEntity> findByDocumentNumber(String documentNumber);
+    boolean existsByDocumentNumber(String documentNumber);
+    void deleteByDocumentNumber(String documentNumber);
 }

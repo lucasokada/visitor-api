@@ -10,6 +10,7 @@ import com.example.visitor_ms.domain.command.CreateAccessCommand;
 import com.example.visitor_ms.domain.command.CreateAddressCommand;
 import com.example.visitor_ms.domain.command.CreateContactCommand;
 import com.example.visitor_ms.domain.command.CreateVisitorCommand;
+import com.example.visitor_ms.domain.exception.NotFoundException;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -141,5 +142,29 @@ class VisitorServiceTest {
         Optional<Visitor> result = visitorService.getByDocumentNumber(documentNumber);
 
         assertEquals(Optional.empty(), result);
+    }
+
+    @Test
+    void deleteByDocumentNumber_whenSuccess_expectDelete() {
+        String documentNumber = "11309929939";
+
+        when(visitorRepository.existsByDocumentNumber(anyString())).thenReturn(true);
+
+        visitorService.deleteByDocumentNumber(documentNumber);
+
+        verify(visitorRepository).existsByDocumentNumber(documentNumber);
+        verify(visitorRepository).deleteByDocumentNumber(documentNumber);
+    }
+
+    @Test
+    void deleteByDocumentNumber_whenDocumentNumberNotExists_expectThrowNotFoundException() {
+        String documentNumber = "11309929939";
+
+        when(visitorRepository.existsByDocumentNumber(anyString())).thenReturn(false);
+
+        assertThrows(NotFoundException.class, () -> visitorService.deleteByDocumentNumber(documentNumber));
+
+        verify(visitorRepository).existsByDocumentNumber(documentNumber);
+        verify(visitorRepository, never()).deleteByDocumentNumber(anyString());
     }
 }

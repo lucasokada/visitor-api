@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface VisitorRepository {
     void save(Visitor person);
     Optional<Visitor> findByDocumentNumber(String documentNumber);
+    boolean existsByDocumentNumber(String documentNumber);
+    void deleteByDocumentNumber(String documentNumber);
 }

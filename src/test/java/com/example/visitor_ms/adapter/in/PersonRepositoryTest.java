@@ -22,6 +22,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -88,5 +90,53 @@ class PersonRepositoryTest {
         Optional<Visitor> existentVisitor = visitorRepository.findByDocumentNumber(documentNumber);
 
         assertEquals(Optional.empty(), existentVisitor);
+    }
+
+    @Test
+    void existsByDocumentNumber_whenNotFoundVisitor_expectReturnFalse() {
+        String documentNumber = "81142337937";
+
+        boolean isExistent = visitorRepository.existsByDocumentNumber(documentNumber);
+
+        assertFalse(isExistent);
+    }
+
+    @Test
+    @Transactional
+    void existsByDocumentNumber_whenFoundVisitor_expectReturnTrue() {
+        String documentNumber = "11309929939";
+
+        visitorJpaRepository.save(new VisitorEntity(validVisitor));
+        boolean isExistent = visitorRepository.existsByDocumentNumber(documentNumber);
+
+        assertTrue(isExistent);
+    }
+
+    @Test
+    @Transactional
+    void deleteByDocumentNumber_whenFoundVisitor_expectDeleteVisitor() {
+        String documentNumber = "11309929939";
+
+        visitorJpaRepository.save(new VisitorEntity(validVisitor));
+
+        visitorRepository.deleteByDocumentNumber(documentNumber);
+
+        Optional<VisitorEntity> visitor = visitorJpaRepository.findByDocumentNumber(documentNumber);
+
+        assertEquals(Optional.empty(), visitor);
+    }
+
+    @Test
+    @Transactional
+    void deleteByDocumentNumber_whenNotFoundVisitor_expectNotDeleteVisitor() {
+        String documentNumber = "11309929931";
+
+        visitorJpaRepository.save(new VisitorEntity(validVisitor));
+
+        visitorRepository.deleteByDocumentNumber(documentNumber);
+
+        Optional<VisitorEntity> visitor = visitorJpaRepository.findByDocumentNumber(validVisitor.getDocumentNumber());
+
+        assertEquals(validVisitor, visitor.get().toDomain());
     }
 }
