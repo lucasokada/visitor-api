@@ -19,6 +19,10 @@ public class Company extends Legal {
         this.serviceProviders = validateServiceProviderVisitors(visitors);
     }
 
+    public Company(String name, String documentNumber) {
+        super(name, documentNumber);
+    }
+
     private Set<Visitor> validateServiceProviderVisitors(Set<Visitor> serviceProviders) {
         boolean hasOnlyServiceProviders = serviceProviders
                 .stream()

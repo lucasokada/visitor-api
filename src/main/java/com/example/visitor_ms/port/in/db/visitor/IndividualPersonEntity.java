@@ -1,4 +1,4 @@
-package com.example.visitor_ms.port.in.db.repository.visitor.entity;
+package com.example.visitor_ms.port.in.db.visitor;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

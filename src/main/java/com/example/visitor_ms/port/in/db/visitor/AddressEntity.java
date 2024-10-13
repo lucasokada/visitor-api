@@ -1,4 +1,4 @@
-package com.example.visitor_ms.port.in.db.repository.visitor.entity;
+package com.example.visitor_ms.port.in.db.visitor;
 
 import com.example.visitor_ms.domain.Address;
 import com.example.visitor_ms.domain.BrazilState;

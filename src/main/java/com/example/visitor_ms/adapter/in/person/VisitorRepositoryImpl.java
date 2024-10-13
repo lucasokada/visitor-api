@@ -2,8 +2,8 @@ package com.example.visitor_ms.adapter.in.person;
 
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
-import com.example.visitor_ms.port.in.db.repository.visitor.entity.VisitorEntity;
-import com.example.visitor_ms.port.in.db.repository.visitor.repository.VisitorJpaRepository;
+import com.example.visitor_ms.port.in.db.visitor.VisitorEntity;
+import com.example.visitor_ms.port.in.db.visitor.VisitorJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

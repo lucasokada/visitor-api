@@ -1,7 +1,5 @@
-package com.example.visitor_ms.port.in.db.repository.visitor.repository;
+package com.example.visitor_ms.port.in.db.visitor;
 
-import com.example.visitor_ms.port.in.db.repository.visitor.entity.IndividualPersonEntity;
-import com.example.visitor_ms.port.in.db.repository.visitor.entity.VisitorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

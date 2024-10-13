@@ -1,4 +1,4 @@
-package com.example.visitor_ms.domain.usecase;
+package com.example.visitor_ms.domain.usecase.visitor;
 
 import com.example.visitor_ms.domain.Visitor;
 
