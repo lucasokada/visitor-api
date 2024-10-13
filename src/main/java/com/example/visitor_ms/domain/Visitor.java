@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Visitor extends Individual {
     private VisitorType type;
 

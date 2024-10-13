@@ -58,7 +58,7 @@ class PersonRepositoryTest {
 
     @Transactional
     @Test
-    void save_whenDocumentAlreadyExists_expectReturnExistentVisitor() {
+    void save_whenDocumentAlreadyExists_expectUpdateExistentVisitor() {
         Visitor existent = new Visitor("Laura Sophie Rafaela Silva", "11309929939",
                 LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContact, validAccess,
                 validAddresses);
@@ -66,9 +66,9 @@ class PersonRepositoryTest {
 
         visitorRepository.save(validVisitor);
 
-        VisitorEntity persisted = visitorJpaRepository.findByDocumentNumber(validVisitor.getDocumentNumber()).orElseThrow();
+        VisitorEntity persisted = visitorJpaRepository.findByDocumentNumber("11309929939").orElseThrow();
 
-        assertEquals(existent, persisted.toDomain());
+        assertEquals(validVisitor, persisted.toDomain());
     }
 
     @Test

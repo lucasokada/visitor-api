@@ -4,6 +4,7 @@ import com.example.visitor_ms.domain.exception.InvalidAccessException;
 import com.example.visitor_ms.domain.exception.InvalidAddressException;
 import com.example.visitor_ms.domain.exception.InvalidContactException;
 import com.example.visitor_ms.domain.exception.InvalidPersonException;
+import com.example.visitor_ms.domain.exception.NotFoundException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,12 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public DefaultApiResponse<Void> handleInvalidContactException(InvalidContactException ex) {
         return new DefaultApiResponse<>(ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }

@@ -39,6 +39,7 @@ public class VisitorService implements CreateVisitorUseCase, GetVisitorUseCase, 
     }
 
     @Override
+    @Transactional
     public void deleteByDocumentNumber(String documentNumber) {
         if(!visitorRepository.existsByDocumentNumber(documentNumber)) {
             throw new NotFoundException("Visitor not found with document number " + documentNumber);

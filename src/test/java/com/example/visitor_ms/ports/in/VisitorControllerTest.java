@@ -14,6 +14,7 @@ import com.example.visitor_ms.domain.exception.InvalidAccessException;
 import com.example.visitor_ms.domain.exception.InvalidAddressException;
 import com.example.visitor_ms.domain.exception.InvalidContactException;
 import com.example.visitor_ms.domain.exception.InvalidPersonException;
+import com.example.visitor_ms.domain.exception.NotFoundException;
 import com.example.visitor_ms.domain.service.VisitorService;
 import com.example.visitor_ms.port.in.rest.visitor.VisitorController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,9 +37,11 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -102,7 +105,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void create_whenValidRequest_expectCreated() throws Exception {
+    void create_whenValidRequest_expectCreated() throws Exception {
         CreateVisitorCommand request = validVisitorCommand();
         Visitor expectedResponse = validVisitor();
 
@@ -118,7 +121,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void create_whenInvalidPersonException_expectBadRequest() throws Exception {
+    void create_whenInvalidPersonException_expectBadRequest() throws Exception {
         CreateVisitorCommand request = validVisitorCommand();
 
         when(visitorService.create(any(CreateVisitorCommand.class))).thenThrow(InvalidPersonException.class);
@@ -132,7 +135,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void create_whenInvalidContactException_expectBadRequest() throws Exception {
+    void create_whenInvalidContactException_expectBadRequest() throws Exception {
         CreateVisitorCommand request = validVisitorCommand();
 
         when(visitorService.create(any(CreateVisitorCommand.class))).thenThrow(InvalidContactException.class);
@@ -146,7 +149,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void create_whenInvalidAccessException_expectBadRequest() throws Exception {
+    void create_whenInvalidAccessException_expectBadRequest() throws Exception {
         CreateVisitorCommand request = validVisitorCommand();
 
         when(visitorService.create(any(CreateVisitorCommand.class))).thenThrow(InvalidAccessException.class);
@@ -160,7 +163,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void create_whenInvalidAddressException_expectBadRequest() throws Exception {
+    void create_whenInvalidAddressException_expectBadRequest() throws Exception {
         CreateVisitorCommand request = validVisitorCommand();
 
         when(visitorService.create(any(CreateVisitorCommand.class))).thenThrow(InvalidAddressException.class);
@@ -174,7 +177,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void getByDocumentNumber_whenSuccess_expectOk() throws Exception {
+    void getByDocumentNumber_whenSuccess_expectOk() throws Exception {
         String documentNumber = "11309929939";
         Visitor visitor = validVisitor();
 
@@ -189,7 +192,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void getByDocumentNumber_whenNotFoundException_expectNotFound() throws Exception {
+    void getByDocumentNumber_whenNotFoundException_expectNotFound() throws Exception {
         String documentNumber = "11309929939";
 
         when(visitorService.getByDocumentNumber(anyString())).thenReturn(Optional.empty());
@@ -202,7 +205,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void getByDocumentNumber_whenInvalidDocumentNumberLength_expectBadRequest() throws Exception {
+    void getByDocumentNumber_whenInvalidDocumentNumberLength_expectBadRequest() throws Exception {
         String documentNumber = "11309929";
 
         mockMvc.perform(get(BASE_PATH + "/documentNumber/" + documentNumber)
@@ -213,7 +216,7 @@ public class VisitorControllerTest {
     }
 
     @Test
-    public void getByDocumentNumber_whenInvalidDocumentNumberWithLetters_expectBadRequest() throws Exception {
+    void getByDocumentNumber_whenInvalidDocumentNumberWithLetters_expectBadRequest() throws Exception {
         String documentNumber = "a130992993a";
 
         mockMvc.perform(get(BASE_PATH + "/documentNumber/" + documentNumber)
@@ -222,4 +225,51 @@ public class VisitorControllerTest {
 
         verify(visitorService, never()).getByDocumentNumber(anyString());
     }
+
+    @Test
+    void deleteByDocumentNumber_whenSuccess_expectNoContent() throws Exception {
+        String documentNumber = "11309929939";
+
+        mockMvc.perform(delete(BASE_PATH + "/documentNumber/" + documentNumber)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(visitorService).deleteByDocumentNumber(documentNumber);
+    }
+
+    @Test
+    void deleteByDocumentNumber_whenNotFoundException_expectNotFound() throws Exception {
+        String documentNumber = "11309929939";
+
+        doThrow(NotFoundException.class).when(visitorService).deleteByDocumentNumber(anyString());
+
+        mockMvc.perform(delete(BASE_PATH + "/documentNumber/" + documentNumber)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(visitorService).deleteByDocumentNumber(documentNumber);
+    }
+
+    @Test
+    void deleteByDocumentNumber_whenInvalidDocumentNumberLength_expectBadRequest() throws Exception {
+        String documentNumber = "11309929";
+
+        mockMvc.perform(delete(BASE_PATH + "/documentNumber/" + documentNumber)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verify(visitorService, never()).deleteByDocumentNumber(anyString());
+    }
+
+    @Test
+    void deleteByDocumentNumber_whenInvalidDocumentNumberWithLetters_expectBadRequest() throws Exception {
+        String documentNumber = "a130992993a";
+
+        mockMvc.perform(delete(BASE_PATH + "/documentNumber/" + documentNumber)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verify(visitorService, never()).deleteByDocumentNumber(anyString());
+    }
+
 }

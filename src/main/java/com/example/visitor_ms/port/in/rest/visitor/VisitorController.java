@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,12 +33,18 @@ public class VisitorController {
 
     @GetMapping("/documentNumber/{documentNumber}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Visitor> getById(@PathVariable("documentNumber") @Valid @Pattern(regexp = "^[0-9]{11}$") String documentNumber) {
+    public ResponseEntity<Visitor> getByDocumentNumber(@PathVariable("documentNumber") @Valid @Pattern(regexp = "^[0-9]{11}$") String documentNumber) {
         Optional<Visitor> visitor = visitorService.getByDocumentNumber(documentNumber);
         if(visitor.isPresent()) {
             return ResponseEntity.ok(visitor.get());
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/documentNumber/{documentNumber}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByDocumentNumber(@PathVariable("documentNumber") @Valid @Pattern(regexp = "^[0-9]{11}$") String documentNumber) {
+        visitorService.deleteByDocumentNumber(documentNumber);
     }
 }
