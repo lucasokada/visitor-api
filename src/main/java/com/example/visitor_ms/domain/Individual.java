@@ -29,7 +29,7 @@ public class Individual implements Person {
     }
 
     private String validateName(String name) {
-        if (name == null || !nameMatchesPattern(name) || !hasSecondName(name)) {
+        if (!nameMatchesPattern(name) || !hasSecondName(name)) {
             throw new InvalidPersonException("Invalid name: it must contain only letters and have at least two parts.");
         }
         return name;
