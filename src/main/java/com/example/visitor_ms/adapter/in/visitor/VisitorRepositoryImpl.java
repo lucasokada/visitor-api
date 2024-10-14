@@ -7,7 +7,10 @@ import com.example.visitor_ms.port.in.db.visitor.VisitorJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -39,6 +42,15 @@ public class VisitorRepositoryImpl implements VisitorRepository {
     @Override
     public void deleteByDocumentNumber(String documentNumber) {
         visitorJpaRepository.deleteByDocumentNumber(documentNumber);
+    }
+
+    @Override
+    public Set<Visitor> findAllById(Iterable<String> documentNumbers) {
+        List<VisitorEntity> visitors = visitorJpaRepository.findAllById(documentNumbers);
+        return visitors
+                .stream()
+                .map(VisitorEntity::toDomain)
+                .collect(Collectors.toSet());
     }
 }
 

@@ -2,7 +2,7 @@ package com.example.visitor_ms.ports.in.rest.company;
 
 import com.example.visitor_ms.domain.Company;
 import com.example.visitor_ms.domain.command.CreateCompanyCommand;
-import com.example.visitor_ms.domain.exception.InvalidCompanyException;
+import com.example.visitor_ms.domain.exception.InvalidCompanyVisitorTypeException;
 import com.example.visitor_ms.domain.service.CompanyService;
 import com.example.visitor_ms.port.in.rest.company.CompanyController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,7 +66,7 @@ public class CompanyControllerTest {
     void create_whenInvalidCompanyException_expectBadRequest() throws Exception {
         CreateCompanyCommand request = validRequest();
 
-        when(companyService.create(any(CreateCompanyCommand.class))).thenThrow(InvalidCompanyException.class);
+        when(companyService.create(any(CreateCompanyCommand.class))).thenThrow(InvalidCompanyVisitorTypeException.class);
 
         mockMvc.perform(post(BASE_PATH)
                         .contentType(MediaType.APPLICATION_JSON)

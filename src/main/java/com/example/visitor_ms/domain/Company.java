@@ -1,6 +1,6 @@
 package com.example.visitor_ms.domain;
 
-import com.example.visitor_ms.domain.exception.InvalidCompanyException;
+import com.example.visitor_ms.domain.exception.InvalidCompanyVisitorTypeException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -27,14 +27,18 @@ public class Company extends Legal {
         if(!serviceProviders.isEmpty()) {
             boolean hasOnlyServiceProviders = serviceProviders
                     .stream()
-                    .anyMatch(e -> e.getType().equals(VisitorType.SERVICE_PROVIDER));
+                    .allMatch(e -> e.getType().equals(VisitorType.SERVICE_PROVIDER));
 
             if (!hasOnlyServiceProviders) {
-                throw new InvalidCompanyException("Invalid service providers: All visitors associated with the company " +
+                throw new InvalidCompanyVisitorTypeException("Invalid service providers: All visitors associated with the company " +
                         "must be of type SERVICE_PROVIDER");
             }
         }
 
         return serviceProviders;
+    }
+
+    public void addAllServiceProviders(Set<Visitor> serviceProviders) {
+        this.serviceProviders.addAll(validateServiceProviderVisitors(serviceProviders));
     }
 }

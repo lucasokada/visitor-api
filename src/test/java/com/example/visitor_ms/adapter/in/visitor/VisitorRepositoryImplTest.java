@@ -16,7 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,6 +39,7 @@ class VisitorRepositoryImplTest {
     private Contact validContact = new Contact("6930138401", "9626759827",
             "1935794707", "name@email.com");
     private Access validAccess = new Access("userName", "PassworD123!");
+    private Access validAccess2 = new Access("userName2", "PassworD123!");
     private Set<Address> validAddresses = new HashSet<>() {{
         add(new Address("Rua 18 JB", 533, "Jardim Bandeirante (COHAB)", "13506517", "Rio Claro", BrazilState.SP));
         add(new Address("Avenida 7", 773, "Jardim Claret", "13503255", "Rio Claro", BrazilState.SP));
@@ -44,6 +47,9 @@ class VisitorRepositoryImplTest {
     private Visitor validVisitor= new Visitor("Augusto João da Rosa", "11309929939",
                 LocalDate.of(1959, 3, 20), VisitorType.RELATED, validContact, validAccess,
                 validAddresses);
+    private Visitor validVisitor2= new Visitor("Allana Ana Elaine Rodrigues", "05788203821",
+            LocalDate.of(1949, 10, 3), VisitorType.RELATED, validContact, validAccess2,
+            validAddresses);
 
     @Transactional
     @Test
@@ -137,5 +143,44 @@ class VisitorRepositoryImplTest {
         Optional<VisitorEntity> visitor = visitorJpaRepository.findByDocumentNumber(validVisitor.getDocumentNumber());
 
         assertEquals(validVisitor, visitor.get().toDomain());
+    }
+
+    @Test
+    @Transactional
+    void findAllById_whenAllDocumentNumbersExists_expectAllVisitors() {
+        var documentNumbers = List.of("11309929939", "05788203821");
+        visitorJpaRepository.save(new VisitorEntity(validVisitor));
+        visitorJpaRepository.save(new VisitorEntity(validVisitor2));
+
+
+        Set<Visitor> visitors = visitorRepository.findAllById(documentNumbers);
+
+        assertEquals(Set.of(validVisitor, validVisitor2), visitors);
+    }
+
+    @Test
+    @Transactional
+    void findAllById_whenPartialDocumentNumbersExists_expectOnlyExistentVisitors() {
+        var documentNumbers = List.of("11309929930", "05788203821");
+        visitorJpaRepository.save(new VisitorEntity(validVisitor));
+        visitorJpaRepository.save(new VisitorEntity(validVisitor2));
+
+
+        Set<Visitor> visitors = visitorRepository.findAllById(documentNumbers);
+
+        assertEquals(Set.of(validVisitor2), visitors);
+    }
+
+    @Test
+    @Transactional
+    void findAllById_whenNoneOfDocumentNumbersExists_expectEmptyVisitors() {
+        var documentNumbers = List.of("11309929930", "05788203822");
+        visitorJpaRepository.save(new VisitorEntity(validVisitor));
+        visitorJpaRepository.save(new VisitorEntity(validVisitor2));
+
+
+        Set<Visitor> visitors = visitorRepository.findAllById(documentNumbers);
+
+        assertEquals(Collections.emptySet(), visitors);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VisitorJpaRepository extends JpaRepository<IndividualPersonEntity, String> {
+public interface VisitorJpaRepository extends JpaRepository<VisitorEntity, String> {
     Optional<VisitorEntity> findByDocumentNumber(String documentNumber);
     boolean existsByDocumentNumber(String documentNumber);
     void deleteByDocumentNumber(String documentNumber);

@@ -22,6 +22,12 @@ public class CompanyRepositoryImpl implements CompanyRepository {
 
     @Override
     public Optional<Company> findByDocumentNumber(String documentNumber) {
+        Optional<CompanyEntity> company = companyJpaRepository.findById(documentNumber);
+        if(company.isPresent()) {
+            CompanyEntity presentCompany = company.get();
+            return Optional.of(presentCompany.toDomain());
+        }
+
         return Optional.empty();
     }
 }

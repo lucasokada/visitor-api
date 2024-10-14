@@ -1,6 +1,6 @@
 package com.example.visitor_ms.domain;
 
-import com.example.visitor_ms.domain.exception.InvalidCompanyException;
+import com.example.visitor_ms.domain.exception.InvalidCompanyVisitorTypeException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -50,13 +50,13 @@ public class CompanyTest {
 
     @Test
     void company_whenCompanyWithRelatedVisitorType_expectThrowInvalidCompanyException() {
-        assertThrows(InvalidCompanyException.class, () -> new Company("Universidade Estadual Paulista \"Júlio de Mesquita Filho\"",
+        assertThrows(InvalidCompanyVisitorTypeException.class, () -> new Company("Universidade Estadual Paulista \"Júlio de Mesquita Filho\"",
                 "48031918001872", relatedVisitors));
     }
 
     @Test
     void company_whenCompanyWithOtherVisitorType_expectThrowInvalidCompanyException() {
-        assertThrows(InvalidCompanyException.class, () -> new Company("Universidade Estadual Paulista \"Júlio de Mesquita Filho\"",
+        assertThrows(InvalidCompanyVisitorTypeException.class, () -> new Company("Universidade Estadual Paulista \"Júlio de Mesquita Filho\"",
                 "48031918001872", otherVisitors));
     }
 }

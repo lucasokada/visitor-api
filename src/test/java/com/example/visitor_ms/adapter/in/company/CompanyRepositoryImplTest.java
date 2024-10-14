@@ -10,6 +10,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -45,5 +47,26 @@ public class CompanyRepositoryImplTest {
         CompanyEntity persisted = companyJpaRepository.findByDocumentNumber("37992724000179").orElseThrow();
 
         assertEquals(validCompany, persisted.toDomain());
+    }
+
+    @Test
+    @Transactional
+    void findByDocumentNumber_whenExistentDocumentNumber_expectReturnOptionalOfVisitor() {
+        companyJpaRepository.save(new CompanyEntity(validCompany));
+
+        Optional<Company> existentVisitor = companyRepository.findByDocumentNumber(validCompany.getDocumentNumber());
+
+        assertEquals(validCompany, existentVisitor.get());
+    }
+
+    @Test
+    @Transactional
+    void findByDocumentNumber_whenNotExistentDocumentNumber_expectReturnOptionalOfEmpty() {
+        String documentNumber = "37992724000170";
+        companyJpaRepository.save(new CompanyEntity(validCompany));
+
+        Optional<Company> existentVisitor = companyRepository.findByDocumentNumber(documentNumber);
+
+        assertEquals(Optional.empty(), existentVisitor);
     }
 }
