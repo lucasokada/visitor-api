@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "serviceProviders")
 @Entity
 @Table(name = "company")
 public class CompanyEntity {
