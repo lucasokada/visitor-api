@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "Visitor")
 @Table(name = "visitor")
 @PrimaryKeyJoinColumn(name = "person_id")
