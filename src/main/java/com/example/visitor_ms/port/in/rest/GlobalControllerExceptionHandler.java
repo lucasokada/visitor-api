@@ -54,9 +54,9 @@ public class GlobalControllerExceptionHandler {
 
 
     @ExceptionHandler(InvalidCompanyVisitorTypeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<String> handleInvalidCompanyException(InvalidCompanyVisitorTypeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(NotFoundException.class)
