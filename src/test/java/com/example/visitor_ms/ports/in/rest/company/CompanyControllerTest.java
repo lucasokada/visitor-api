@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -27,6 +28,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,7 +79,7 @@ public class CompanyControllerTest {
 
         doNothing().when(companyService).associate(anyString(), anySet());
 
-        mockMvc.perform(post(BASE_PATH + "/company/" + cnpj + "/visitors")
+        mockMvc.perform(post(BASE_PATH + "/documentNumber/" + cnpj + "/visitors")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(visitorsDocumentNumbers)))
                 .andExpect(status().isNoContent());
@@ -92,7 +94,7 @@ public class CompanyControllerTest {
 
         doThrow(NotFoundException.class).when(companyService).associate(anyString(), anySet());
 
-        mockMvc.perform(post(BASE_PATH + "/company/" + cnpj + "/visitors")
+        mockMvc.perform(post(BASE_PATH + "/documentNumber/" + cnpj + "/visitors")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(visitorsDocumentNumbers)))
                 .andExpect(status().isNotFound());
@@ -107,7 +109,7 @@ public class CompanyControllerTest {
 
         doThrow(InvalidCompanyVisitorTypeException.class).when(companyService).associate(anyString(), anySet());
 
-        mockMvc.perform(post(BASE_PATH + "/company/" + cnpj + "/visitors")
+        mockMvc.perform(post(BASE_PATH + "/documentNumber/" + cnpj + "/visitors")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(visitorsDocumentNumbers)))
                 .andExpect(status().isUnprocessableEntity());
@@ -120,7 +122,7 @@ public class CompanyControllerTest {
         String cnpj = "379927240001";
         Set<String> visitorsDocumentNumbers = Set.of("11309929939", "05788203821");
 
-        mockMvc.perform(post(BASE_PATH + "/company/" + cnpj + "/visitors")
+        mockMvc.perform(post(BASE_PATH + "/documentNumber/" + cnpj + "/visitors")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(visitorsDocumentNumbers)))
                 .andExpect(status().isBadRequest());
@@ -133,11 +135,35 @@ public class CompanyControllerTest {
         String cnpj = "37992724000179";
         Set<String> visitorsDocumentNumbers = Set.of("11309929939", "057882038");
 
-        mockMvc.perform(post(BASE_PATH + "/company/" + cnpj + "/visitors")
+        mockMvc.perform(post(BASE_PATH + "/documentNumber/" + cnpj + "/visitors")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(visitorsDocumentNumbers)))
                 .andExpect(status().isBadRequest());
 
         verify(companyService, never()).associate(anyString(), anySet());
+    }
+
+    @Test
+    void getByDocumentNumber_whenSuccess_expectOk() throws Exception {
+        String cnpj = "37992724000179";
+        Company expectedResponse = validCompany();
+
+        when(companyService.getByDocumentNumber(anyString())).thenReturn(Optional.of(expectedResponse));
+
+        mockMvc.perform(get(BASE_PATH + "/documentNumber/" + cnpj)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(mapper.writeValueAsString(expectedResponse)));
+    }
+
+    @Test
+    void getByDocumentNumber_whenOptionalEmpty_expectNotFound() throws Exception {
+        String cnpj = "37992724000179";
+
+        when(companyService.getByDocumentNumber(anyString())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get(BASE_PATH + "/documentNumber/" + cnpj)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

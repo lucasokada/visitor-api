@@ -9,6 +9,7 @@ import com.example.visitor_ms.domain.repository.CompanyRepository;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
 import com.example.visitor_ms.domain.usecase.company.AssociateVisitorsUseCase;
 import com.example.visitor_ms.domain.usecase.company.CreateCompanyUseCase;
+import com.example.visitor_ms.domain.usecase.company.GetCompanyUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CompanyService implements CreateCompanyUseCase, AssociateVisitorsUseCase {
+public class CompanyService implements CreateCompanyUseCase, GetCompanyUseCase, AssociateVisitorsUseCase {
     private final CompanyRepository companyRepository;
     private final VisitorRepository visitorRepository;
 
@@ -59,5 +60,11 @@ public class CompanyService implements CreateCompanyUseCase, AssociateVisitorsUs
         Set<String> notFoundDocumentNumbers = new HashSet<>(documentNumbers);
         notFoundDocumentNumbers.removeAll(foundVisitorsDocumentNumbers);
         throw new NotFoundException("visitors not found for document numbers " + notFoundDocumentNumbers);
+    }
+
+    @Override
+    @Transactional
+    public Optional<Company> getByDocumentNumber(String documentNumber) {
+        return companyRepository.findByDocumentNumber(documentNumber);
     }
 }

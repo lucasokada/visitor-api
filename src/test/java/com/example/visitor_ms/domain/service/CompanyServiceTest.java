@@ -43,6 +43,33 @@ class CompanyServiceTest {
     @Mock
     private VisitorRepository visitorRepository;
 
+    private static Company getExistentCompany(Contact validContact, Access validAccess, Access validAccess2) {
+        Set<Address> validAddresses = new HashSet<>() {{
+            add(new Address("Rua 18 JB", 533, "Jardim Bandeirante (COHAB)", "13506517", "Rio Claro", BrazilState.SP));
+            add(new Address("Avenida 7", 773, "Jardim Claret", "13503255", "Rio Claro", BrazilState.SP));
+        }};
+        Visitor validVisitor= new Visitor("Augusto João da Rosa", "11309929939",
+                LocalDate.of(1959, 3, 20), VisitorType.SERVICE_PROVIDER, validContact, validAccess,
+                validAddresses);
+        Visitor validVisitor2= new Visitor("Allana Ana Elaine Rodrigues", "05788203821",
+                LocalDate.of(1949, 10, 3), VisitorType.SERVICE_PROVIDER, validContact, validAccess2,
+                validAddresses);
+        return new Company("Empresa Existente", "37992724000179", Set.of(validVisitor, validVisitor2));
+    }
+
+    private static Visitor getValidVisitor() {
+        Contact validContact = new Contact("6930138401", "9626759827",
+                "1935794707", "name@email.com");
+        Access validAccess = new Access("userName", "PassworD123!");
+        Set<Address> validAddresses = new HashSet<>() {{
+            add(new Address("Rua 18 JB", 533, "Jardim Bandeirante (COHAB)", "13506517", "Rio Claro", BrazilState.SP));
+            add(new Address("Avenida 7", 773, "Jardim Claret", "13503255", "Rio Claro", BrazilState.SP));
+        }};
+        return new Visitor("Augusto João da Rosa", "11309929939",
+                LocalDate.of(1959, 3, 20), VisitorType.SERVICE_PROVIDER, validContact, validAccess,
+                validAddresses);
+    }
+
     @Test
     void create_whenSuccess_expectReturnCompany() {
         Company company = new Company("Condomínio Swift", "37992724000179");
@@ -119,16 +146,7 @@ class CompanyServiceTest {
         Company existentCompany = new Company("Empresa Existente", "37992724000179");
         Set<String> serviceProvidersDocumentNumbers = Set.of("11309929939", "05788203822");
 
-        Contact validContact = new Contact("6930138401", "9626759827",
-                "1935794707", "name@email.com");
-        Access validAccess = new Access("userName", "PassworD123!");
-        Set<Address> validAddresses = new HashSet<>() {{
-            add(new Address("Rua 18 JB", 533, "Jardim Bandeirante (COHAB)", "13506517", "Rio Claro", BrazilState.SP));
-            add(new Address("Avenida 7", 773, "Jardim Claret", "13503255", "Rio Claro", BrazilState.SP));
-        }};
-        Visitor validVisitor= new Visitor("Augusto João da Rosa", "11309929939",
-                LocalDate.of(1959, 3, 20), VisitorType.SERVICE_PROVIDER, validContact, validAccess,
-                validAddresses);
+        Visitor validVisitor = getValidVisitor();
 
         when(companyRepository.findByDocumentNumber("37992724000179")).thenReturn(Optional.of(existentCompany));
         when(visitorRepository.findAllById(serviceProvidersDocumentNumbers)).thenReturn(Set.of(validVisitor));
@@ -165,5 +183,34 @@ class CompanyServiceTest {
         assertThrows(InvalidCompanyVisitorTypeException.class, () -> companyService.associate("37992724000179", new HashSet<>(serviceProvidersDocumentNumbers)));
 
         verify(companyRepository, never()).save(any());
+    }
+
+    @Test
+    void getByDocumentNumber_whenFoundCompany_expectReturnCompany() {
+        String documentNumber = "37992724000179";
+        Contact validContact = new Contact("6930138401", "9626759827",
+                "1935794707", "name@email.com");
+        Access validAccess = new Access("userName", "PassworD123!");
+        Access validAccess2 = new Access("userName2", "PassworD123!");
+        Company existentCompany = getExistentCompany(validContact, validAccess, validAccess2);
+
+        when(companyRepository.findByDocumentNumber(anyString())).thenReturn(Optional.of(existentCompany));
+
+        Optional<Company> result = companyService.getByDocumentNumber(documentNumber);
+
+        assertEquals(existentCompany, result.get());
+        verify(companyRepository).findByDocumentNumber(documentNumber);
+    }
+
+    @Test
+    void getByDocumentNumber_whenNotFoundFoundCompany_expectOptionalEmpty() {
+        String documentNumber = "37992724000179";
+
+        when(companyRepository.findByDocumentNumber(anyString())).thenReturn(Optional.empty());
+
+        Optional<Company> result = companyService.getByDocumentNumber(documentNumber);
+
+        assertEquals(Optional.empty(), result);
+        verify(companyRepository).findByDocumentNumber(documentNumber);
     }
 }
