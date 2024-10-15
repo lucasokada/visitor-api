@@ -1,10 +1,16 @@
 package com.example.visitor_ms.domain.service;
 
 import com.example.visitor_ms.domain.Company;
+import com.example.visitor_ms.domain.EventType;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.command.CreateCompanyCommand;
 import com.example.visitor_ms.domain.command.assembler.CreateCompanyCommandAssembler;
+import com.example.visitor_ms.domain.dto.CompanyDto;
+import com.example.visitor_ms.domain.dto.CompanyVisitorAssociationDto;
+import com.example.visitor_ms.domain.dto.EventDto;
+import com.example.visitor_ms.domain.dto.VisitorDto;
 import com.example.visitor_ms.domain.exception.NotFoundException;
+import com.example.visitor_ms.domain.messaging.EventWriter;
 import com.example.visitor_ms.domain.repository.CompanyRepository;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
 import com.example.visitor_ms.domain.usecase.company.AssociateVisitorsUseCase;
@@ -24,6 +30,7 @@ import java.util.stream.Collectors;
 public class CompanyService implements CreateCompanyUseCase, GetCompanyUseCase, AssociateVisitorsUseCase {
     private final CompanyRepository companyRepository;
     private final VisitorRepository visitorRepository;
+    private final EventWriter eventWriter;
 
     @Override
     @Transactional
@@ -34,6 +41,7 @@ public class CompanyService implements CreateCompanyUseCase, GetCompanyUseCase, 
         } else {
             Company company = CreateCompanyCommandAssembler.assemble(createCompanyCommand);
             companyRepository.save(company);
+            eventWriter.publish(new EventDto<>(EventType.CREATE, new CompanyDto(company.getName(), company.getDocumentNumber())));
             return company;
         }
     }
@@ -47,6 +55,11 @@ public class CompanyService implements CreateCompanyUseCase, GetCompanyUseCase, 
         validateAllVisitorsFoundByDocumentNumbers(existentServiceProviders, serviceProvidersDocumentNumbers);
         company.addAllServiceProviders(existentServiceProviders);
         companyRepository.save(company);
+        company.getServiceProviders()
+                .forEach(serviceProvider -> eventWriter.publish(new EventDto<>(EventType.UPDATE, new CompanyVisitorAssociationDto(
+                        new CompanyDto(company.getName(), company.getDocumentNumber()),
+                        new VisitorDto(serviceProvider.getName(), serviceProvider.getDocumentNumber(), serviceProvider.getBornAt(), serviceProvider.getType())
+                ))));
     }
 
     private void validateAllVisitorsFoundByDocumentNumbers(Set<Visitor> foundVisitors, Set<String> documentNumbers) {

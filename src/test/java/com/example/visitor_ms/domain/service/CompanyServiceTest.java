@@ -5,11 +5,17 @@ import com.example.visitor_ms.domain.Address;
 import com.example.visitor_ms.domain.BrazilState;
 import com.example.visitor_ms.domain.Company;
 import com.example.visitor_ms.domain.Contact;
+import com.example.visitor_ms.domain.EventType;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.VisitorType;
 import com.example.visitor_ms.domain.command.CreateCompanyCommand;
+import com.example.visitor_ms.domain.dto.CompanyDto;
+import com.example.visitor_ms.domain.dto.CompanyVisitorAssociationDto;
+import com.example.visitor_ms.domain.dto.EventDto;
+import com.example.visitor_ms.domain.dto.VisitorDto;
 import com.example.visitor_ms.domain.exception.InvalidCompanyVisitorTypeException;
 import com.example.visitor_ms.domain.exception.NotFoundException;
+import com.example.visitor_ms.domain.messaging.EventWriter;
 import com.example.visitor_ms.domain.repository.CompanyRepository;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
 import org.junit.jupiter.api.Test;
@@ -29,6 +35,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +49,9 @@ class CompanyServiceTest {
 
     @Mock
     private VisitorRepository visitorRepository;
+
+    @Mock
+    private EventWriter eventWriter;
 
     private static Company getExistentCompany(Contact validContact, Access validAccess, Access validAccess2) {
         Set<Address> validAddresses = new HashSet<>() {{
@@ -82,6 +92,7 @@ class CompanyServiceTest {
         assertEquals(company, result);
         verify(companyRepository).findByDocumentNumber(request.getDocumentNumber());
         verify(companyRepository).save(company);
+        verify(eventWriter).publish(new EventDto<>(EventType.CREATE, new CompanyDto("Condomínio Swift", "37992724000179")));
     }
 
     @Test
@@ -96,6 +107,8 @@ class CompanyServiceTest {
         assertEquals(existentCompany, result);
         verify(companyRepository).findByDocumentNumber(request.getDocumentNumber());
         verify(companyRepository, never()).save(any(Company.class));
+        verify(eventWriter, never()).publish(any(EventDto.class));
+
     }
 
     @Test
@@ -125,6 +138,15 @@ class CompanyServiceTest {
 
         existentCompany.addAllServiceProviders(Set.of(validVisitor, validVisitor2));
         verify(companyRepository).save(existentCompany);
+        verify(eventWriter, times(2)).publish(any(EventDto.class));
+        verify(eventWriter).publish(new EventDto<>(EventType.UPDATE, new CompanyVisitorAssociationDto(
+                new CompanyDto("Empresa Existente", "37992724000179"),
+                new VisitorDto("Augusto João da Rosa", "11309929939",
+                LocalDate.of(1959, 3, 20), VisitorType.SERVICE_PROVIDER))));
+        verify(eventWriter).publish(new EventDto<>(EventType.UPDATE, new CompanyVisitorAssociationDto(
+                new CompanyDto("Empresa Existente", "37992724000179"),
+                new VisitorDto("Allana Ana Elaine Rodrigues", "05788203821",
+                        LocalDate.of(1949, 10, 3), VisitorType.SERVICE_PROVIDER))));
     }
 
     @Test
@@ -139,6 +161,8 @@ class CompanyServiceTest {
 
         verify(visitorRepository, never()).findAllById(anyList());
         verify(companyRepository, never()).save(any());
+        verify(eventWriter, never()).publish(any(EventDto.class));
+
     }
 
     @Test
@@ -155,6 +179,8 @@ class CompanyServiceTest {
                 new HashSet<>(serviceProvidersDocumentNumbers)));
 
         verify(companyRepository, never()).save(any());
+        verify(eventWriter, never()).publish(any(EventDto.class));
+
     }
 
     @Test
@@ -183,6 +209,7 @@ class CompanyServiceTest {
         assertThrows(InvalidCompanyVisitorTypeException.class, () -> companyService.associate("37992724000179", new HashSet<>(serviceProvidersDocumentNumbers)));
 
         verify(companyRepository, never()).save(any());
+        verify(eventWriter, never()).publish(any(EventDto.class));
     }
 
     @Test
