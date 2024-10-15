@@ -4,13 +4,17 @@ import com.example.visitor_ms.domain.Access;
 import com.example.visitor_ms.domain.Address;
 import com.example.visitor_ms.domain.BrazilState;
 import com.example.visitor_ms.domain.Contact;
+import com.example.visitor_ms.domain.EventType;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.VisitorType;
 import com.example.visitor_ms.domain.command.CreateAccessCommand;
 import com.example.visitor_ms.domain.command.CreateAddressCommand;
 import com.example.visitor_ms.domain.command.CreateContactCommand;
 import com.example.visitor_ms.domain.command.CreateVisitorCommand;
+import com.example.visitor_ms.domain.dto.EventDto;
+import com.example.visitor_ms.domain.dto.VisitorDto;
 import com.example.visitor_ms.domain.exception.NotFoundException;
+import com.example.visitor_ms.domain.messaging.EventWriter;
 import com.example.visitor_ms.domain.repository.VisitorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +45,9 @@ class VisitorServiceTest {
 
     @Mock
     private VisitorRepository visitorRepository;
+
+    @Mock
+    private EventWriter eventWriter;
 
     private CreateVisitorCommand validVisitorCommand() {
         return new CreateVisitorCommand("Augusto João da Rosa", "11309929939",
@@ -94,6 +101,8 @@ class VisitorServiceTest {
 
         assertEquals(visitor, result);
         verify(visitorRepository).save(visitor);
+        verify(eventWriter).publish(new EventDto<VisitorDto>(EventType.CREATE, new VisitorDto("Augusto João da Rosa", "11309929939",
+                LocalDate.of(1959, 3, 20), VisitorType.RELATED)));
     }
 
     @Test
@@ -107,6 +116,7 @@ class VisitorServiceTest {
 
         assertEquals(visitor, result);
         verify(visitorRepository, never()).save(any(Visitor.class));
+        verify(eventWriter, never()).publish(any(EventDto.class));
     }
 
     @Test
@@ -119,6 +129,7 @@ class VisitorServiceTest {
         assertThrows(RuntimeException.class, () -> visitorService.create(request));
 
         verify(visitorRepository).save(visitor);
+        verify(eventWriter, never()).publish(any(EventDto.class));
     }
 
     @Test
@@ -149,10 +160,14 @@ class VisitorServiceTest {
         String documentNumber = "11309929939";
 
         when(visitorRepository.existsByDocumentNumber(anyString())).thenReturn(true);
+        when(visitorRepository.findByDocumentNumber(anyString())).thenReturn(Optional.of(validVisitor()));
 
         visitorService.deleteByDocumentNumber(documentNumber);
 
         verify(visitorRepository).existsByDocumentNumber(documentNumber);
+        verify(visitorRepository).findByDocumentNumber(documentNumber);
+        verify(eventWriter).publish(new EventDto<VisitorDto>(EventType.DELETE, new VisitorDto("Augusto João da Rosa", "11309929939",
+                LocalDate.of(1959, 3, 20), VisitorType.RELATED)));
         verify(visitorRepository).deleteByDocumentNumber(documentNumber);
     }
 
@@ -165,6 +180,8 @@ class VisitorServiceTest {
         assertThrows(NotFoundException.class, () -> visitorService.deleteByDocumentNumber(documentNumber));
 
         verify(visitorRepository).existsByDocumentNumber(documentNumber);
+        verify(visitorRepository, never()).findByDocumentNumber(documentNumber);
+        verify(eventWriter, never()).publish(any(EventDto.class));
         verify(visitorRepository, never()).deleteByDocumentNumber(anyString());
     }
 }

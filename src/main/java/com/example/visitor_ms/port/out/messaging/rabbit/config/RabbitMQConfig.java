@@ -1,4 +1,4 @@
-package com.example.visitor_ms.adapter.out.messaging.rabbitmq.config;
+package com.example.visitor_ms.port.out.messaging.rabbit.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -18,19 +18,16 @@ public class RabbitMQConfig {
 
     @Bean
     Queue queue() {
-        System.out.println("chamou queue");
         return new Queue(QUEUE_NAME, true, false, false);
     }
 
     @Bean
     DirectExchange exchange() {
-        System.out.println("chamou exchange");
         return new DirectExchange(EXCHANGE_NAME);
     }
 
     @Bean
     Binding binding(Queue queue, DirectExchange exchange) {
-        System.out.println("chamou binding");
         return BindingBuilder.bind(queue).to(exchange).with(queue.getName());
     }
 
