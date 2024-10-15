@@ -3,6 +3,7 @@ package com.example.visitor_ms.port.in.db.company;
 import com.example.visitor_ms.domain.Company;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.port.in.db.visitor.VisitorEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +35,7 @@ public class CompanyEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<VisitorEntity> serviceProviders = new HashSet<>();
 
     public CompanyEntity(Company company) {
@@ -44,6 +45,7 @@ public class CompanyEntity {
                 .stream()
                 .map(VisitorEntity::new)
                 .collect(Collectors.toSet());
+        this.serviceProviders.forEach(e -> e.setCompany(this));
     }
 
     public Company toDomain() {

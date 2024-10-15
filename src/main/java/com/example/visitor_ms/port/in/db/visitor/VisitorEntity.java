@@ -3,16 +3,20 @@ package com.example.visitor_ms.port.in.db.visitor;
 import com.example.visitor_ms.domain.Address;
 import com.example.visitor_ms.domain.Visitor;
 import com.example.visitor_ms.domain.VisitorType;
+import com.example.visitor_ms.port.in.db.company.CompanyEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Set;
@@ -30,6 +34,11 @@ public class VisitorEntity extends IndividualPersonEntity {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private VisitorType type = VisitorType.OTHER;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "company_documentNumber")
+    private CompanyEntity company;
 
     public VisitorEntity(Visitor visitor) {
         super(visitor.getDocumentNumber(), visitor.getName(), visitor.getBornAt(), new ContactEntity(visitor.getContact()),
