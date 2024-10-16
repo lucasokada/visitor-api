@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.example.serviceb"})
+@ComponentScan(basePackages = {"com.example.serviceb"}) // encontrar componentes como controladores
 @RestController
 public class ServiceBApplication {
 
@@ -18,8 +18,8 @@ public class ServiceBApplication {
         SpringApplication.run(ServiceBApplication.class, args);
     }
 
-    @GetMapping("/visitante/{id}")
-    public String getVisitante(@PathVariable Long id) {
+    @GetMapping("/visitante/{id}") // espera um parâmetro de rota {id}
+    public String getVisitante(@PathVariable Long id) { //capturado aqui
         return "Visitante com ID " + id + " encontrado!";
     }
 }

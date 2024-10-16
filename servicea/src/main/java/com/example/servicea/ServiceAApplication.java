@@ -24,12 +24,12 @@ public class ServiceAApplication {
 
     @GetMapping("/visitantes")
     public List<VisitanteModel> getVisitantes() {
-        return visitantes; // Retorna a lista de visitantes
+        return visitantes; // memória de objetos para armazenar os visitantes 
     }
 
     @PostMapping("/visitante")
     public String addVisitante(@RequestBody VisitanteModel visitante) {
-        visitantes.add(visitante); // Adiciona o visitante à lista
+        visitantes.add(visitante); // armazenados na lista em memória
         return "Visitante " + visitante.getNome() + " adicionado com sucesso!";
     }
 }
